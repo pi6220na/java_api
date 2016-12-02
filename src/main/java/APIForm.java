@@ -22,7 +22,7 @@ public class APIForm extends JFrame {
     private JRadioButton radioButton6;
 
 
-    Vector<Level1> level1Vector;
+    Vector<Level1> level1Vector = new Vector<>(100);
 
 
     //Models for JTables.
@@ -34,6 +34,12 @@ public class APIForm extends JFrame {
 
         super("Java API Application");
 
+        for (Level1 item : inData) {
+            System.out.println("item = " + item.getId());
+            System.out.println("item = " + item.getName());
+            System.out.println("item = " + item.getDescription());
+            level1Vector.add(item);
+        }
 
         setContentPane(rootPanel);
         setPreferredSize(new Dimension(1000, 600));   //Set preferred size before call to pack()
