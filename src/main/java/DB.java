@@ -225,7 +225,210 @@ public class DB {
         }
     }
 
+    //fetchExceptionRecords
+    Vector<Level2> fetchExceptionRecords(String searchName) {
 
+        Vector<Level2> Level2Records = new Vector<>();
+
+        try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
+             Statement statement = conn.createStatement()) {
+
+            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM exception WHERE name LIKE ?");
+
+            searchName = "%" + searchName + "%";
+
+            sstmt.setString(1, searchName);
+
+            ResultSet rsAll = sstmt.executeQuery();
+
+            System.out.println("Executed query... " + searchName);
+
+            while (rsAll.next()) {
+                String id = rsAll.getString("exception_ID");
+                String type = rsAll.getString("name");
+                String name = rsAll.getString("summary");
+                //String summary = rsAll.getString("detail");
+                String summary = null;
+                String package_fk = rsAll.getString("x_package_ID_fk");
+
+
+                Level2 record = new Level2(id, type, name, summary, package_fk);
+                Level2Records.add(record);
+
+                System.out.println("exception_ID = " + id);
+                System.out.println("type = " + type);
+                System.out.println("Name = " + name);
+                System.out.println("Summary = " + summary);
+                System.out.println("package_fk = " + package_fk);
+
+            }
+
+            rsAll.close();
+            statement.close();
+            conn.close();
+
+            return Level2Records;    //If there's no data, this will be empty
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;  //since we have to return something.
+        }
+    }
+
+
+    //fetchErrorsRecords
+    Vector<Level2> fetchErrorsRecords(String searchName) {
+
+        Vector<Level2> Level2Records = new Vector<>();
+
+        try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
+             Statement statement = conn.createStatement()) {
+
+            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM errors WHERE name LIKE ?");
+
+            searchName = "%" + searchName + "%";
+
+            sstmt.setString(1, searchName);
+
+            ResultSet rsAll = sstmt.executeQuery();
+
+            System.out.println("Executed query... " + searchName);
+
+            while (rsAll.next()) {
+                String id = rsAll.getString("errors_ID");
+                String type = rsAll.getString("name");
+                String name = rsAll.getString("summary");
+                //String summary = rsAll.getString("detail");
+                String summary = null;
+                String package_fk = rsAll.getString("r_package_ID_fk");
+
+
+                Level2 record = new Level2(id, type, name, summary, package_fk);
+                Level2Records.add(record);
+
+                System.out.println("error_ID = " + id);
+                System.out.println("type = " + type);
+                System.out.println("Name = " + name);
+                System.out.println("Summary = " + summary);
+                System.out.println("package_fk = " + package_fk);
+
+            }
+
+            rsAll.close();
+            statement.close();
+            conn.close();
+
+            return Level2Records;    //If there's no data, this will be empty
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;  //since we have to return something.
+        }
+    }
+
+
+    //fetchFieldRecords
+    Vector<Level3> fetchFieldRecords(String searchName) {
+
+        Vector<Level3> Level3Records = new Vector<>();
+
+        try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
+             Statement statement = conn.createStatement()) {
+
+            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM field WHERE name LIKE ?");
+
+            searchName = "%" + searchName + "%";
+
+            sstmt.setString(1, searchName);
+
+            ResultSet rsAll = sstmt.executeQuery();
+
+            System.out.println("Executed query... " + searchName);
+
+            while (rsAll.next()) {
+                String id = rsAll.getString("field_ID");
+                String modifier = rsAll.getString("modifier");
+                String name = rsAll.getString("name");
+                String summary = rsAll.getString("summary");
+                String detail = rsAll.getString("detail");
+                String klass_fk = rsAll.getString("f_klass_ID_fk");
+
+
+                Level3 record = new Level3(id, modifier, name, summary, detail, klass_fk);
+                Level3Records.add(record);
+
+                System.out.println("field_ID = " + id);
+                System.out.println("modifier = " + modifier);
+                System.out.println("Name = " + name);
+                System.out.println("Summary = " + summary);
+                System.out.println("Detail = " + detail);
+                System.out.println("klass_fk = " + klass_fk);
+
+            }
+
+            rsAll.close();
+            statement.close();
+            conn.close();
+
+            return Level3Records;    //If there's no data, this will be empty
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;  //since we have to return something.
+        }
+    }
+
+
+    //fetchConstructorRecords
+    Vector<Level3> fetchConstructorRecords(String searchName) {
+
+        Vector<Level3> Level3Records = new Vector<>();
+
+        try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
+             Statement statement = conn.createStatement()) {
+
+            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM constructor WHERE name LIKE ?");
+
+            searchName = "%" + searchName + "%";
+
+            sstmt.setString(1, searchName);
+
+            ResultSet rsAll = sstmt.executeQuery();
+
+            System.out.println("Executed query... " + searchName);
+
+            while (rsAll.next()) {
+                String id = rsAll.getString("constructor_ID");
+                String modifier = rsAll.getString("modifier");
+                String name = rsAll.getString("name");
+                String summary = rsAll.getString("summary");
+                String detail = rsAll.getString("detail");
+                String klass_fk = rsAll.getString("c_klass_ID_fk");
+
+
+                Level3 record = new Level3(id, modifier, name, summary, detail, klass_fk);
+                Level3Records.add(record);
+
+                System.out.println("constructor_ID = " + id);
+                System.out.println("modifier = " + modifier);
+                System.out.println("Name = " + name);
+                System.out.println("Summary = " + summary);
+                System.out.println("Detail = " + detail);
+                System.out.println("klass_fk = " + klass_fk);
+
+            }
+
+            rsAll.close();
+            statement.close();
+            conn.close();
+
+            return Level3Records;    //If there's no data, this will be empty
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;  //since we have to return something.
+        }
+    }
 
 
 }

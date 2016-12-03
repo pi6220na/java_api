@@ -6,7 +6,7 @@ import java.util.Vector;
 /**
  * Created by myrlin on 12/1/2016.
  */
-public class APIForm extends JFrame {
+public class API_GUI extends JFrame {
     private JPanel rootPanel;
     private JTable Level3Tables;
     private JTable Level2Tables;
@@ -18,6 +18,7 @@ public class APIForm extends JFrame {
     private JRadioButton radioButton2;
     private JRadioButton radioButton3;
     private JRadioButton radioButton4;
+    private JRadioButton radioButton5;
     private JTextField textField1;
     private JTextField textField2;
     private JTextField textField3;
@@ -40,7 +41,7 @@ public class APIForm extends JFrame {
     ComboTableModel comboTableModel;
 
 
-    public APIForm(Vector<Level1> inData) {
+    public API_GUI(Vector<Level1> inData) {
 
         super("Java API Application");
 
@@ -61,6 +62,7 @@ public class APIForm extends JFrame {
         group.add(radioButton2);
         group.add(radioButton3);
         group.add(radioButton4);
+        group.add(radioButton5);
 
 
         // Create model for JTables
@@ -143,11 +145,12 @@ public class APIForm extends JFrame {
         });
 
 
+        // Combination query on package, class, and method tables
         radioButton1.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange()==1) {
-                    System.out.println("RadioButton1 pressed");
+                    System.out.println("RadioButton1-combo pressed");
 
                     // Read data from JTextField
                     String methodSearch = textFieldMethod.getText();
@@ -162,9 +165,115 @@ public class APIForm extends JFrame {
                         comboTableModel.fireTableDataChanged();
                         textFieldMethod.setText("");
                     }
+                    group.clearSelection();
                 }
             }
         });
+
+
+        // query on exception table
+        radioButton3.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange()==1) {
+                    System.out.println("RadioButton3-exception pressed");
+
+                    // Read data from JTextField
+                    String methodSearch = textFieldClass.getText();
+                    //Check that user entered data
+                    if (methodSearch.trim().length() != 0) {
+                        //query database
+                        Vector<Level2> inData = Controller.db.fetchExceptionRecords(methodSearch);
+                        level2Vector.clear();
+                        for (Level2 item: inData) {
+                            level2Vector.add(item);
+                        }
+                        level2TableModel.fireTableDataChanged();
+                        textFieldClass.setText("");
+                    }
+                    group.clearSelection();
+                }
+            }
+        });
+
+
+        // query on errors table
+        radioButton5.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange()==1) {
+                    System.out.println("RadioButton5-errors pressed");
+
+                    // Read data from JTextField
+                    String methodSearch = textFieldClass.getText();
+                    //Check that user entered data
+                    if (methodSearch.trim().length() != 0) {
+                        //query database
+                        Vector<Level2> inData = Controller.db.fetchErrorsRecords(methodSearch);
+                        level2Vector.clear();
+                        for (Level2 item: inData) {
+                            level2Vector.add(item);
+                        }
+                        level2TableModel.fireTableDataChanged();
+                        textFieldClass.setText("");
+                    }
+                    group.clearSelection();
+                }
+            }
+        });
+
+
+        // query on field table
+        radioButton4.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange()==1) {
+                    System.out.println("RadioButton4-field pressed");
+
+                    // Read data from JTextField
+                    String methodSearch = textFieldMethod.getText();
+                    //Check that user entered data
+                    if (methodSearch.trim().length() != 0) {
+                        //query database
+                        Vector<Level3> inData = Controller.db.fetchFieldRecords(methodSearch);
+                        level3Vector.clear();
+                        for (Level3 item: inData) {
+                            level3Vector.add(item);
+                        }
+                        level3TableModel.fireTableDataChanged();
+                        textFieldMethod.setText("");
+                    }
+                    group.clearSelection();
+                }
+            }
+        });
+
+
+        // query on constructor table
+        radioButton2.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange()==1) {
+                    System.out.println("RadioButton2-constructor pressed");
+
+                    // Read data from JTextField
+                    String methodSearch = textFieldMethod.getText();
+                    //Check that user entered data
+                    if (methodSearch.trim().length() != 0) {
+                        //query database
+                        Vector<Level3> inData = Controller.db.fetchConstructorRecords(methodSearch);
+                        level3Vector.clear();
+                        for (Level3 item: inData) {
+                            level3Vector.add(item);
+                        }
+                        level3TableModel.fireTableDataChanged();
+                        textFieldMethod.setText("");
+                    }
+                    group.clearSelection();
+                }
+            }
+        });
+
 
 
         Level1Tables.addMouseListener(new MouseAdapter() {
