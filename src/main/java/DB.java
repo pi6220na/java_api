@@ -1,6 +1,5 @@
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 /*
@@ -171,6 +170,60 @@ public class DB {
         }
     }
 
+
+    Vector<Combo> fetchComboRecords(String searchName) {
+
+        Vector<Combo> ComboRecords = new Vector<>();
+
+
+        try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
+             Statement statement = conn.createStatement()) {
+
+            java.sql.PreparedStatement sstmt =
+              conn.prepareStatement("SELECT modifier, method.name, method.summary, klass.type_flag, klass.name, " +
+                      "package.name FROM method, klass, package " +
+                      "WHERE m_klass_ID_fk = klass.klass_ID and k_package_ID_fk = package.package_ID\n" +
+                      "and method.summary like ?");
+
+            searchName = "%" + searchName + "%";
+
+            sstmt.setString(1, searchName);
+
+            ResultSet rsAll = sstmt.executeQuery();
+
+            System.out.println("Executed query... " + searchName);
+
+            while (rsAll.next()) {
+                String modifier = rsAll.getString("modifier");
+                String name = rsAll.getString("method.name");
+                String summary = rsAll.getString("method.summary");
+                String k_type = rsAll.getString("klass.type_flag");
+                String k_name = rsAll.getString("klass.name");
+                String p_name = rsAll.getString("package.name");
+
+
+                Combo record = new Combo(modifier, name, summary, k_type, k_name, p_name);
+                ComboRecords.add(record);
+
+                System.out.println("modifier = " + modifier);
+                System.out.println("name = " + name);
+                System.out.println("summary = " + summary);
+                System.out.println("ktype = " + k_type);
+                System.out.println("kname = " + k_name);
+                System.out.println("pname = " + p_name);
+            }
+
+            rsAll.close();
+            statement.close();
+            conn.close();
+
+            return ComboRecords;    //If there's no data, this will be empty
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;  //since we have to return something.
+        }
+    }
 
 
 

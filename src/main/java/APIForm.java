@@ -1,9 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
@@ -29,20 +24,20 @@ public class APIForm extends JFrame {
     private JTextField textField4;
     private JTextField textField5;
     private JTextField textField6;
+    private JTable ComboTable;
 
 
     Vector<Level1> level1Vector = new Vector<>(100);
     Vector<Level2> level2Vector = new Vector<>(100);
     Vector<Level3> level3Vector = new Vector<>(100);
+    Vector<Combo> comboVector = new Vector<>(100);
 
 
     //Models for JTables.
     Level1TableModel level1TableModel;
     Level2TableModel level2TableModel;
     Level3TableModel level3TableModel;
-
-
-
+    ComboTableModel comboTableModel;
 
 
     public APIForm(Vector<Level1> inData) {
@@ -54,7 +49,7 @@ public class APIForm extends JFrame {
         }
 
         setContentPane(rootPanel);
-        setPreferredSize(new Dimension(1000, 600));   //Set preferred size before call to pack()
+        setPreferredSize(new Dimension(1000, 700));   //Set preferred size before call to pack()
         pack();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -72,11 +67,13 @@ public class APIForm extends JFrame {
         level1TableModel = new Level1TableModel(level1Vector);
         level2TableModel = new Level2TableModel(level2Vector);
         level3TableModel = new Level3TableModel(level3Vector);
+        comboTableModel = new ComboTableModel(comboVector);
 
         //Configure each component to use its model
         Level1Tables.setModel(level1TableModel);
         Level2Tables.setModel(level2TableModel);
         Level3Tables.setModel(level3TableModel);
+        ComboTable.setModel(comboTableModel);
 
         // listeners here
 
@@ -151,6 +148,20 @@ public class APIForm extends JFrame {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange()==1) {
                     System.out.println("RadioButton1 pressed");
+
+                    // Read data from JTextField
+                    String methodSearch = textFieldMethod.getText();
+                    //Check that user entered data
+                    if (methodSearch.trim().length() != 0) {
+                        //query database
+                        Vector<Combo> inData = Controller.db.fetchComboRecords(methodSearch);
+                        comboVector.clear();
+                        for (Combo item: inData) {
+                            comboVector.add(item);
+                        }
+                        comboTableModel.fireTableDataChanged();
+                        textFieldMethod.setText("");
+                    }
                 }
             }
         });
@@ -161,6 +172,7 @@ public class APIForm extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("table 1 mouse clicked");
+                clearTextFields();
                 textField1.setText(Level1Tables.getValueAt(Level1Tables.getSelectedRow(), 0).toString());
                 textField2.setText(Level1Tables.getValueAt(Level1Tables.getSelectedRow(), 1).toString());
                 textField3.setText(Level1Tables.getValueAt(Level1Tables.getSelectedRow(), 2).toString());
@@ -174,6 +186,7 @@ public class APIForm extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("table 2 mouse clicked");
+                clearTextFields();
                 textField1.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 0).toString());
                 textField2.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 1).toString());
                 textField3.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 2).toString());
@@ -190,6 +203,7 @@ public class APIForm extends JFrame {
                 super.mouseClicked(e);
                 System.out.println("table 3 mouse clicked");
                 try {
+                    clearTextFields();
                     textField1.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 0).toString());
                     textField2.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 1).toString());
                     textField3.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 2).toString());
@@ -209,6 +223,32 @@ public class APIForm extends JFrame {
         });
 
 
+        ComboTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("Combo Table mouse clicked");
+                try {
+                    clearTextFields();
+                    textField1.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 0).toString());
+                    textField2.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 1).toString());
+                    textField3.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 2).toString());
+                    textField4.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 3).toString());
+                    textField5.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 4).toString());
+                    textField6.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 5).toString());
+                } catch (NullPointerException npe) {
+                    System.out.println("Combo Table mouse clicked exception on null value");
+                    npe.printStackTrace();
+                    System.out.println();
+
+                }
+            }
+        });
+
+
+
+
+
         // close app and window from exit "X" button on window title bar
         //https://www.clear.rice.edu/comp310/JavaResources/frame_close.html
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -220,7 +260,15 @@ public class APIForm extends JFrame {
         });
 
 
+    }
 
+    void clearTextFields() {
+        textField1.setText("");
+        textField2.setText("");
+        textField3.setText("");
+        textField4.setText("");
+        textField5.setText("");
+        textField6.setText("");
 
     }
 

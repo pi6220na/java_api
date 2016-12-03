@@ -1,5 +1,5 @@
-/**
- * Created by myrlin on 12/2/2016.
+/*
+ * Created by Jeremy on 12/2/2016.
  */
 public class Level3 {
 
