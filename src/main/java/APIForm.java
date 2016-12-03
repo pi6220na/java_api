@@ -1,6 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Vector;
 
 /**
@@ -14,19 +19,29 @@ public class APIForm extends JFrame {
     private JTextField textFieldPackage;
     private JTextField textFieldClass;
     private JTextField textFieldMethod;
-    private JRadioButton radioButton2;
-    private JRadioButton radioButton4;
     private JRadioButton radioButton1;
-    private JRadioButton radioButton5;
+    private JRadioButton radioButton2;
     private JRadioButton radioButton3;
-    private JRadioButton radioButton6;
+    private JRadioButton radioButton4;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField5;
+    private JTextField textField6;
 
 
     Vector<Level1> level1Vector = new Vector<>(100);
+    Vector<Level2> level2Vector = new Vector<>(100);
+    Vector<Level3> level3Vector = new Vector<>(100);
 
 
     //Models for JTables.
     Level1TableModel level1TableModel;
+    Level2TableModel level2TableModel;
+    Level3TableModel level3TableModel;
+
+
 
 
 
@@ -35,9 +50,6 @@ public class APIForm extends JFrame {
         super("Java API Application");
 
         for (Level1 item : inData) {
-            System.out.println("item = " + item.getId());
-            System.out.println("item = " + item.getName());
-            System.out.println("item = " + item.getDescription());
             level1Vector.add(item);
         }
 
@@ -48,16 +60,167 @@ public class APIForm extends JFrame {
         setVisible(true);
 
 
+        //Group the radio buttons.
+        ButtonGroup group = new ButtonGroup();
+        group.add(radioButton1);
+        group.add(radioButton2);
+        group.add(radioButton3);
+        group.add(radioButton4);
+
+
         // Create model for JTables
-        level1TableModel = new Level1TableModel(level1Vector);   //Provide Vector of Open Tickets
+        level1TableModel = new Level1TableModel(level1Vector);
+        level2TableModel = new Level2TableModel(level2Vector);
+        level3TableModel = new Level3TableModel(level3Vector);
 
         //Configure each component to use its model
         Level1Tables.setModel(level1TableModel);
+        Level2Tables.setModel(level2TableModel);
+        Level3Tables.setModel(level3TableModel);
 
-//        for (Level1 item: inData) {
-//            level1Vector.add(item);
-//        }
-//        level1TableModel.fireTableDataChanged();
+        // listeners here
+
+
+        textFieldPackage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Read data from JTextField
+                String packageSearch = textFieldPackage.getText();
+                //Check that user entered data
+                if (packageSearch.trim().length() != 0) {
+                    //query database
+                    Vector<Level1> inData = Controller.db.fetchLevel1Records(packageSearch);
+                    level1Vector.clear();
+                    for (Level1 item: inData) {
+                        level1Vector.add(item);
+                    }
+                    level1TableModel.fireTableDataChanged();
+                    textFieldPackage.setText("");
+                }
+            }
+        });
+
+
+        textFieldClass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Read data from JTextField
+                String classSearch = textFieldClass.getText();
+                //Check that user entered data
+                if (classSearch.trim().length() != 0) {
+                    //query database
+                    Vector<Level2> inData = Controller.db.fetchLevel2Records(classSearch);
+                    level2Vector.clear();
+                    for (Level2 item: inData) {
+                        level2Vector.add(item);
+                    }
+                    level2TableModel.fireTableDataChanged();
+                    textFieldClass.setText("");
+                }
+
+            }
+        });
+
+
+        textFieldMethod.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Read data from JTextField
+                String methodSearch = textFieldMethod.getText();
+                //Check that user entered data
+                if (methodSearch.trim().length() != 0) {
+                    //query database
+                    Vector<Level3> inData = Controller.db.fetchLevel3Records(methodSearch);
+                    level3Vector.clear();
+                    for (Level3 item: inData) {
+                        level3Vector.add(item);
+                    }
+                    level3TableModel.fireTableDataChanged();
+                    textFieldMethod.setText("");
+                }
+
+            }
+        });
+
+
+        radioButton1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange()==1) {
+                    System.out.println("RadioButton1 pressed");
+                }
+            }
+        });
+
+
+        Level1Tables.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("table 1 mouse clicked");
+                textField1.setText(Level1Tables.getValueAt(Level1Tables.getSelectedRow(), 0).toString());
+                textField2.setText(Level1Tables.getValueAt(Level1Tables.getSelectedRow(), 1).toString());
+                textField3.setText(Level1Tables.getValueAt(Level1Tables.getSelectedRow(), 2).toString());
+            }
+
+        });
+
+
+        Level2Tables.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("table 2 mouse clicked");
+                textField1.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 0).toString());
+                textField2.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 1).toString());
+                textField3.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 2).toString());
+                textField4.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 3).toString());
+                textField5.setText(Level2Tables.getValueAt(Level2Tables.getSelectedRow(), 4).toString());
+            }
+
+        });
+
+
+        Level3Tables.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.out.println("table 3 mouse clicked");
+                try {
+                    textField1.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 0).toString());
+                    textField2.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 1).toString());
+                    textField3.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 2).toString());
+                    textField4.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 3).toString());
+                    // null data value causing exception on column 5
+                    // textField5.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 4).toString());
+                    textField6.setText(Level3Tables.getValueAt(Level3Tables.getSelectedRow(), 5).toString());
+                } catch (NullPointerException npe) {
+                    System.out.println("Table 3 mouse clicked exception on null value");
+                    npe.printStackTrace();
+                    System.out.println();
+
+                }
+
+            }
+
+        });
+
+
+        // close app and window from exit "X" button on window title bar
+        //https://www.clear.rice.edu/comp310/JavaResources/frame_close.html
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+
+                System.exit(0);
+
+            }
+        });
+
+
+
 
     }
 
