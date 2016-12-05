@@ -36,7 +36,14 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM package WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.searchName()) {
+                sstmt = conn.prepareStatement("SELECT * FROM package WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM package WHERE description LIKE ?");
+            }
+
 
             searchName = "%" + searchName + "%";
 
@@ -82,14 +89,12 @@ public class DB {
 
             java.sql.PreparedStatement sstmt;
 
-            if (Controller.gui.useName) {
+            if (Controller.gui.searchName()) {
                 sstmt = conn.prepareStatement("SELECT * FROM klass WHERE name LIKE ?");
             } else {
                 sstmt = conn.prepareStatement("SELECT * FROM klass WHERE summary LIKE ?");
             }
 
-
-            //java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM klass WHERE name LIKE ?");
 
             searchName = "%" + searchName + "%";
 
@@ -139,7 +144,13 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM method WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.searchName()) {
+                sstmt = conn.prepareStatement("SELECT * FROM method WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM method WHERE summary LIKE ?");
+            }
 
             searchName = "%" + searchName + "%";
 
@@ -244,7 +255,13 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM exception WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.searchName()) {
+                sstmt = conn.prepareStatement("SELECT * FROM exception WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM exception WHERE summary LIKE ?");
+            }
 
             searchName = "%" + searchName + "%";
 
@@ -295,7 +312,13 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM errors WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.searchName()) {
+                sstmt = conn.prepareStatement("SELECT * FROM errors WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM errors WHERE summary LIKE ?");
+            }
 
             searchName = "%" + searchName + "%";
 
@@ -346,7 +369,14 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM field WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.searchName()) {
+                sstmt = conn.prepareStatement("SELECT * FROM field WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM field WHERE summary LIKE ?");
+            }
+
 
             searchName = "%" + searchName + "%";
 
@@ -398,7 +428,13 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM constructor WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.searchName()) {
+                sstmt = conn.prepareStatement("SELECT * FROM constructor WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM constructor WHERE summary LIKE ?");
+            }
 
             searchName = "%" + searchName + "%";
 

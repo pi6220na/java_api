@@ -30,6 +30,7 @@ public class API_GUI extends JFrame {
     private JTable ComboTable;
     private JRadioButton searchNameRadioButton;
     private JRadioButton searchDescriptionRadioButton;
+    private JButton helpButton;
 
 
     Vector<Level1> level1Vector = new Vector<>(100);
@@ -47,13 +48,9 @@ public class API_GUI extends JFrame {
     // Boolean used to indicate column to search on
     boolean useName = true;
 
-    public API_GUI(Vector<Level1> inData) {
+    public API_GUI() {
 
         super("Java API Application");
-
-        for (Level1 item : inData) {
-            level1Vector.add(item);
-        }
 
         setContentPane(rootPanel);
         setPreferredSize(new Dimension(1000, 700));   //Set preferred size before call to pack()
@@ -401,6 +398,64 @@ public class API_GUI extends JFrame {
                 System.out.println("Description button = " + useName);
             }
         });
+        helpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+                // http://alvinalexander.com/blog/post/jfc-swing/java-swing-create-jscrollpane-example-editor
+                SwingUtilities.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        // create a jtextarea
+                        JTextArea textArea = new JTextArea();
+
+                        // add text to it; we want to make it scroll
+                        textArea.setText("Welcome to the Java API GUI Help Instructions. This application is a database of information\n" +
+                                "extracted from the Oracle Web Site for Java SE version 8. Currently, seven tables are utilized. They are:\n\n" +
+                                "Package - Package level name and description\n" +
+                                "Class - Class level type (1 = class, 2 = interface), name, and summary\n" +
+                                "Exception - Exceptions a particular package can throw\n" +
+                                "Errors - Errors a particular packaage can throw\n" +
+                                "Method - Methods of a Class, modifier, name, and summary\n" +
+                                "Field - Fields of a Class, modifier, name, and summary\n" +
+                                "Constructor - Constructors of a Class, modifier, name, and summary\n\n" +
+                                " ---  Enter a word in one of the three text entry boxes: Search Package Level, " +
+                                "Search Class Level, or Search Method Level, followd by the enter key.\n\n" +
+                                "  ---  Four Radio Buttons at the top left: represents four other tables that can be searched by entering" +
+                                " data in their respective text box\n (Class Level or Method Level).\n\n" +
+                                "  ---  Radio Button \"Join on Pack/Class/Method\": enter data in the Method Level text box and click the\n" +
+                                " Radio Button. Data will be shown in the bottom table.\n\n" +
+                                "  ---  Top right buttons: Search Name and Search Description are mutually exclusive and determine which\n" +
+                                " field in the table to search on. Applies to all tables and buttons except the Join button.\n\n" +
+                                "  ---  Clicking on a table row will select that row and copy the columns to individual text fields in the\n" +
+                                " Details Section.\n\n");
+
+                        // create a scrollpane, givin it the textarea as a constructor argument
+                        JScrollPane scrollPane = new JScrollPane(textArea);
+
+                        // now add the scrollpane to the jframe's content pane, specifically
+                        // placing it in the center of the jframe's borderlayout
+                        JFrame frame = new JFrame("Java API GUI Instructions for Usage");
+                        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+                        // make it easy to close the application
+                        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+                        // set the frame size (you'll usually want to call frame.pack())
+                        frame.setSize(new Dimension(840, 480));
+
+                        // center the frame
+                        frame.setLocationRelativeTo(null);
+
+                        // make it visible to the user
+                        frame.setVisible(true);
+                    }
+                });
+
+            }
+        });
     }
 
     void clearTextFields() {
@@ -413,8 +468,16 @@ public class API_GUI extends JFrame {
 
     }
 
-    public boolean searchColumn() {
+    public boolean searchName() {
         return useName;
     }
 
+    public void initializeTable(Vector<Level1> inData) {
+
+        for (Level1 item : inData) {
+            level1Vector.add(item);
+        }
+        level1TableModel.fireTableDataChanged();
+
+    }
 }

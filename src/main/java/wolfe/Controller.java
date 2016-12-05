@@ -31,9 +31,11 @@ public class Controller {
         String testTemp = "%util%";
 
         db = new DB();
-        Vector<Level1> allData = db.fetchLevel1Records(testTemp);
 
-        gui = new API_GUI(allData);
+        gui = new API_GUI();
+
+        Vector<Level1> allData = db.fetchLevel1Records(testTemp);
+        gui.initializeTable(allData);
 
         System.out.println("finally at the end");
     }
