@@ -12,6 +12,11 @@ import java.util.Vector;
  *  This app utilizes the java_api database that contains data scrapped from
  *  the downloaded Java SE 8 API documentation.
  *
+ *  See the following Oracle link for a detailed description of the API structure and format:
+ *  https://docs.oracle.com/javase/8/docs/api/help-doc.html
+ *  The database is modelled based on the API structure.
+ *
+ *
  */
 
 public class Controller {
@@ -28,12 +33,11 @@ public class Controller {
 
     private void startApp() {
 
-        String testTemp = "%util%";
-
         db = new DB();
-
         gui = new API_GUI();
 
+        // populate Level 1 table when opening Window for the first time
+        String testTemp = "%util%";
         Vector<Level1> allData = db.fetchLevel1Records(testTemp);
         gui.initializeTable(allData);
 

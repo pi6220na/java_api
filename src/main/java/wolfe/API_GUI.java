@@ -5,14 +5,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 
-/**
- * Created by myrlin on 12/1/2016.
+/*
+ * Created by Jeremy on 12/1/2016.
  */
 public class API_GUI extends JFrame {
     private JPanel rootPanel;
     private JTable Level3Tables;
     private JTable Level2Tables;
     private JTable Level1Tables;
+    private JTable ComboTable;
     private JTextField textFieldPackage;
     private JTextField textFieldClass;
     private JTextField textFieldMethod;
@@ -21,18 +22,17 @@ public class API_GUI extends JFrame {
     private JRadioButton radioButton3;
     private JRadioButton radioButton4;
     private JRadioButton radioButton5;
+    private JRadioButton searchNameRadioButton;
+    private JRadioButton searchDescriptionRadioButton;
+    private JButton helpButton;
     private JTextField textField1;
     private JTextField textField2;
     private JTextField textField3;
     private JTextField textField4;
     private JTextField textField5;
     private JTextField textField6;
-    private JTable ComboTable;
-    private JRadioButton searchNameRadioButton;
-    private JRadioButton searchDescriptionRadioButton;
-    private JButton helpButton;
 
-
+    // Vectors for JTables.
     Vector<Level1> level1Vector = new Vector<>(100);
     Vector<Level2> level2Vector = new Vector<>(100);
     Vector<Level3> level3Vector = new Vector<>(100);
@@ -87,7 +87,6 @@ public class API_GUI extends JFrame {
         ComboTable.setModel(comboTableModel);
 
         // listeners here
-
 
         textFieldPackage.addActionListener(new ActionListener() {
             @Override
@@ -284,7 +283,7 @@ public class API_GUI extends JFrame {
         });
 
 
-
+        // copy Package level row information to detail section
         Level1Tables.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -298,7 +297,7 @@ public class API_GUI extends JFrame {
 
         });
 
-
+        // copy Class level row information to detail section
         Level2Tables.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -314,7 +313,7 @@ public class API_GUI extends JFrame {
 
         });
 
-
+        // copy Method level row information to detail section
         Level3Tables.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -341,6 +340,7 @@ public class API_GUI extends JFrame {
         });
 
 
+        // // copy Combo level row information to detail section
         ComboTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -398,6 +398,7 @@ public class API_GUI extends JFrame {
                 System.out.println("Description button = " + useName);
             }
         });
+
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
