@@ -1,3 +1,5 @@
+package wolfe;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -26,6 +28,8 @@ public class API_GUI extends JFrame {
     private JTextField textField5;
     private JTextField textField6;
     private JTable ComboTable;
+    private JRadioButton searchNameRadioButton;
+    private JRadioButton searchDescriptionRadioButton;
 
 
     Vector<Level1> level1Vector = new Vector<>(100);
@@ -40,6 +44,8 @@ public class API_GUI extends JFrame {
     Level3TableModel level3TableModel;
     ComboTableModel comboTableModel;
 
+    // Boolean used to indicate column to search on
+    boolean useName = true;
 
     public API_GUI(Vector<Level1> inData) {
 
@@ -64,6 +70,12 @@ public class API_GUI extends JFrame {
         group.add(radioButton4);
         group.add(radioButton5);
 
+        // second group of radio buttons.
+        ButtonGroup rGroup = new ButtonGroup();
+        rGroup.add(searchNameRadioButton);
+        rGroup.add(searchDescriptionRadioButton);
+
+        searchNameRadioButton.setSelected(true);
 
         // Create model for JTables
         level1TableModel = new Level1TableModel(level1Vector);
@@ -336,7 +348,7 @@ public class API_GUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                System.out.println("Combo Table mouse clicked");
+                System.out.println("wolfe.Combo Table mouse clicked");
                 try {
                     clearTextFields();
                     textField1.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 0).toString());
@@ -346,16 +358,13 @@ public class API_GUI extends JFrame {
                     textField5.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 4).toString());
                     textField6.setText(ComboTable.getValueAt(ComboTable.getSelectedRow(), 5).toString());
                 } catch (NullPointerException npe) {
-                    System.out.println("Combo Table mouse clicked exception on null value");
+                    System.out.println("wolfe.Combo Table mouse clicked exception on null value");
                     npe.printStackTrace();
                     System.out.println();
 
                 }
             }
         });
-
-
-
 
 
         // close app and window from exit "X" button on window title bar
@@ -369,6 +378,29 @@ public class API_GUI extends JFrame {
         });
 
 
+        searchNameRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (searchNameRadioButton.isSelected()) {
+                    useName = true;
+                } else {
+                    useName = false;
+                }
+                System.out.println("Name button = " + useName);
+            }
+        });
+
+        searchDescriptionRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (searchDescriptionRadioButton.isSelected()) {
+                    useName = false;
+                } else {
+                    useName = true;
+                }
+                System.out.println("Description button = " + useName);
+            }
+        });
     }
 
     void clearTextFields() {
@@ -379,6 +411,10 @@ public class API_GUI extends JFrame {
         textField5.setText("");
         textField6.setText("");
 
+    }
+
+    public boolean searchColumn() {
+        return useName;
     }
 
 }

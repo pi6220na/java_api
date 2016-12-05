@@ -1,5 +1,7 @@
+package wolfe;
 
 import java.sql.*;
+import java.util.AbstractCollection;
 import java.util.Vector;
 
 /*
@@ -78,7 +80,16 @@ public class DB {
         try (Connection conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASSWORD);
              Statement statement = conn.createStatement()) {
 
-            java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM klass WHERE name LIKE ?");
+            java.sql.PreparedStatement sstmt;
+
+            if (Controller.gui.useName) {
+                sstmt = conn.prepareStatement("SELECT * FROM klass WHERE name LIKE ?");
+            } else {
+                sstmt = conn.prepareStatement("SELECT * FROM klass WHERE summary LIKE ?");
+            }
+
+
+            //java.sql.PreparedStatement sstmt = conn.prepareStatement("SELECT * FROM klass WHERE name LIKE ?");
 
             searchName = "%" + searchName + "%";
 
