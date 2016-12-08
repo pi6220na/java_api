@@ -1,11 +1,14 @@
 package wolfe;
 
 import java.sql.*;
-import java.util.AbstractCollection;
 import java.util.Vector;
 
 /*
  * Created by Jeremy on 12/1/2016.
+ *
+ * This class accesses the java_api database and loads the results of search queries into
+ * vectors which are returned to the calling Class API_GUI for display to the user.
+ *
  */
 public class DB {
 

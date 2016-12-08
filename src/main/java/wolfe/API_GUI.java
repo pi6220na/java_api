@@ -7,6 +7,8 @@ import java.util.Vector;
 
 /*
  * Created by Jeremy on 12/1/2016.
+ *
+ * Java_API GUI code. Accesses data from java_api database via calls to DB class methods.
  */
 public class API_GUI extends JFrame {
     private JPanel rootPanel;
@@ -88,6 +90,8 @@ public class API_GUI extends JFrame {
 
         // listeners here
 
+
+        // Package level(1) user input text field handler
         textFieldPackage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,6 +113,7 @@ public class API_GUI extends JFrame {
         });
 
 
+        // Class level(2) user input text field handler
         textFieldClass.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,6 +136,7 @@ public class API_GUI extends JFrame {
         });
 
 
+        // Field(3) level user input text field handler
         textFieldMethod.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -153,7 +159,7 @@ public class API_GUI extends JFrame {
         });
 
 
-        // Combination query on package, class, and method tables
+        // Combined query on package, class, and method tables
         radioButton1.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -179,7 +185,7 @@ public class API_GUI extends JFrame {
         });
 
 
-        // query on exception table
+        // query on exception table trigger
         radioButton3.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -205,7 +211,7 @@ public class API_GUI extends JFrame {
         });
 
 
-        // query on errors table
+        // query on errors table trigger
         radioButton5.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -231,7 +237,7 @@ public class API_GUI extends JFrame {
         });
 
 
-        // query on field table
+        // query on field table trigger
         radioButton4.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -257,7 +263,7 @@ public class API_GUI extends JFrame {
         });
 
 
-        // query on constructor table
+        // query on constructor table trigger
         radioButton2.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -375,6 +381,7 @@ public class API_GUI extends JFrame {
         });
 
 
+        // set boolean for searching on name or description
         searchNameRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -387,6 +394,7 @@ public class API_GUI extends JFrame {
             }
         });
 
+        // set boolean for searching on name or description
         searchDescriptionRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -399,6 +407,8 @@ public class API_GUI extends JFrame {
             }
         });
 
+
+        // display help text in separate JFrame window
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -459,6 +469,7 @@ public class API_GUI extends JFrame {
         });
     }
 
+    // clear out the six detail section text fields
     void clearTextFields() {
         textField1.setText("");
         textField2.setText("");
@@ -473,6 +484,8 @@ public class API_GUI extends JFrame {
         return useName;
     }
 
+
+    // first time run - load Package level table with data from string specified in Class Controller
     public void initializeTable(Vector<Level1> inData) {
 
         for (Level1 item : inData) {

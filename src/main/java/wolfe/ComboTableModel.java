@@ -1,6 +1,5 @@
 package wolfe;
 
-import wolfe.Combo;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
